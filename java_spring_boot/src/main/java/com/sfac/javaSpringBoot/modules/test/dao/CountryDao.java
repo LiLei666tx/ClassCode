@@ -14,8 +14,7 @@ public interface CountryDao {
 
     //根据id查询country对象
     @Select("select * from m_country where country_id = #{countryId}")
-
-    //做一个映射对City
+    //做一个映射对City（@Results 封装结果集）
     @Results(id = "countryResults", value = {
             //再加一个countryId,因为被使用了
             @Result( column = "country_id" , property = "countryId"),
