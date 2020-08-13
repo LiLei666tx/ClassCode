@@ -1,6 +1,5 @@
 package com.sfac.javaSpringBoot.modules.test.service.impl;
 
-import antlr.preprocessor.PreprocessorTokenTypes;
 import com.sfac.javaSpringBoot.modules.common.vo.Result;
 import com.sfac.javaSpringBoot.modules.common.vo.SearchVo;
 import com.sfac.javaSpringBoot.modules.test.entity.Student;
@@ -13,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -71,5 +72,90 @@ public class StudentServiceImpl implements StudentService {
         Sort.Direction direction = Sort.Direction.DESC;
         Sort sort = new Sort(direction, "studentName");
         return studentRepository.findAll(sort);
+    }
+
+    //不用谢service层了，直接在service的实现类调用不同的方法就好了
+    @Override
+    public List<Student> getStudentsByStudentName(String studentName) {
+//        return Optional.ofNullable(studentRepository
+//                .findByStudentName(studentName))
+//                .orElse(Collections.emptyList());
+//        return Optional.ofNullable(studentRepository
+//                .findByStudentNameLike(
+//                        String.format("%s%s%s","%",studentName,"%")
+//                ))
+//                .orElse(Collections.emptyList());
+        return Optional.ofNullable(studentRepository
+                .findTop2ByStudentNameLike(
+                        String.format("%s%s%s","%",studentName,"%")
+                ))
+                .orElse(Collections.emptyList());
+    }
+
+    //根据多个属性studentName和cardId来模糊查询Student(HQL)
+    @Override
+    public List<Student> getStudentsByStudentName(String studentName,int cardId) {
+
+        if(cardId > 0){
+            return studentRepository.getStudentsByParams(studentName,cardId);
+        }else{
+//          return Optional.ofNullable(studentRepository
+//                .findByStudentName(studentName))
+//                .orElse(Collections.emptyList());
+//          return Optional.ofNullable(studentRepository
+//                .findByStudentNameLike(
+//                        String.format("%s%s%s","%",studentName,"%")
+//                ))
+//                .orElse(Collections.emptyList());
+            return Optional.ofNullable(studentRepository
+                    .findTop2ByStudentNameLike(
+                            String.format("%s%s%s","%",studentName,"%")
+                    ))
+                    .orElse(Collections.emptyList());
+        }
+    }
+
+    //根据多个属性studentName和cardId来模糊查询Student(JPQL)
+    @Override
+    public List<Student> getStudentsByStudentName2(String studentName, int cardId) {
+        if(cardId > 0){
+            return studentRepository.getStudentsByParams2(studentName,cardId);
+        }else{
+//          return Optional.ofNullable(studentRepository
+//                .findByStudentName(studentName))
+//                .orElse(Collections.emptyList());
+//          return Optional.ofNullable(studentRepository
+//                .findByStudentNameLike(
+//                        String.format("%s%s%s","%",studentName,"%")
+//                ))
+//                .orElse(Collections.emptyList());
+            return Optional.ofNullable(studentRepository
+                    .findTop2ByStudentNameLike(
+                            String.format("%s%s%s","%",studentName,"%")
+                    ))
+                    .orElse(Collections.emptyList());
+        }
+    }
+
+    //根据多个属性studentName和cardId来模糊查询Student(原生SQL)
+    @Override
+    public List<Student> getStudentsByStudentName3(String studentName, int cardId) {
+        if(cardId > 0){
+            return studentRepository.getStudentsByParams3(studentName,cardId);
+        }else{
+//          return Optional.ofNullable(studentRepository
+//                .findByStudentName(studentName))
+//                .orElse(Collections.emptyList());
+//          return Optional.ofNullable(studentRepository
+//                .findByStudentNameLike(
+//                        String.format("%s%s%s","%",studentName,"%")
+//                ))
+//                .orElse(Collections.emptyList());
+            return Optional.ofNullable(studentRepository
+                    .findTop2ByStudentNameLike(
+                            String.format("%s%s%s","%",studentName,"%")
+                    ))
+                    .orElse(Collections.emptyList());
+        }
     }
 }

@@ -57,4 +57,54 @@ public class StudentController {
     public List<Student> getStudents() {
         return studentService.getStudents();
     }
+
+    /**
+     * 127.0.0.1/api/studentsTwo?studentName=LiLei1 ---- get
+     * @param studentName
+     * @return
+     */
+    //单个属性查询student
+    @GetMapping("/studentsTwo")
+    List<Student> getStudentsByStudentName(@RequestParam String studentName){
+        return studentService.getStudentsByStudentName(studentName);
+    }
+
+    /**
+     * 127.0.0.1/api/studentsThree?studentName=LiLei2&cardId=2 ---- get
+     * @param studentName
+     * @return
+     */
+    //多个属性查询student
+    @GetMapping("/studentsThree")
+    List<Student> getStudentsByParams(
+            @RequestParam String studentName,
+            @RequestParam(required = false, defaultValue = "0") Integer cardId){
+        return studentService.getStudentsByStudentName(studentName,cardId);
+    }
+
+    /**
+     * 127.0.0.1/api/studentsFour?studentName=LiLei2&cardId=2 ---- get
+     * @param studentName
+     * @return
+     */
+    //多个属性查询student
+    @GetMapping("/studentsFour")
+    List<Student> getStudentsByParams2(
+            @RequestParam String studentName,
+            @RequestParam(required = false, defaultValue = "0") Integer cardId){
+        return studentService.getStudentsByStudentName2(studentName,cardId);
+    }
+
+    /**
+     * 127.0.0.1/api/studentsFive?studentName=LiLei2&cardId=2 ---- get
+     * @param studentName
+     * @return
+     */
+    //多个属性查询student
+    @GetMapping("/studentsFive")
+    List<Student> getStudentsByParams3(
+            @RequestParam String studentName,
+            @RequestParam(required = false, defaultValue = "0") Integer cardId){
+        return studentService.getStudentsByStudentName3(studentName,cardId);
+    }
 }
