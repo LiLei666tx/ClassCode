@@ -9,7 +9,7 @@ public class Result<T> {
 
     private int status;
     private String message;
-    private T object;
+    private T object;       //泛型
 
     public Result() {
     }

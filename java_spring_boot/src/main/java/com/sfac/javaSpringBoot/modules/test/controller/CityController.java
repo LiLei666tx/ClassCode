@@ -82,4 +82,8 @@ public class CityController {
     public Result<Object> deleteCity(@PathVariable int cityId){
         return cityService.deleteCity(cityId);
     }
+
+    public static void main(String[] args) {
+        System.out.println(String.format("%s--%S","lilei","lilei"));
+    }
 }

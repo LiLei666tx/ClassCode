@@ -15,6 +15,7 @@ public class SearchVo {
 	private String orderBy;
 	private String sort;
 
+	//初始化
 	public void initSearchVo() {
 		if (this != null) {
 			this.setCurrentPage(this.getCurrentPage() == 0 ? DEFAULT_CURRENT_PAGE : this.getCurrentPage());

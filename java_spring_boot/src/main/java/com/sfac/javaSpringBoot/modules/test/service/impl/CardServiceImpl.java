@@ -16,7 +16,7 @@ public class CardServiceImpl implements CardService {
     private CardRepository cardRepository;
 
     @Override
-    @Transactional
+    @Transactional      //事务注解
     public Result<Card> insertCard(Card card) {
         cardRepository.saveAndFlush(card);
         return new Result<Card>(

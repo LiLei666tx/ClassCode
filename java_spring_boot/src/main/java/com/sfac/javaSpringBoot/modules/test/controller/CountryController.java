@@ -32,4 +32,19 @@ public class CountryController {
     public Country getCountryByCountryId(@RequestParam String countryName){
         return countryService.getCountryByCountryName(countryName);
     }
+
+    //从MySQL数据库拿数据存到redis中，然后再拿出来
+
+    /**
+     * 127.0.0.1/api/redis/country/522 --- get
+     * @param countryId
+     * @return
+     */
+    /**
+     * 127.0.0.1/api/redis/country/522 ---- get
+     */
+    @GetMapping("/redis/country/{countryId}")
+    public Country mograteCountryByRedis(@PathVariable int countryId) {
+        return countryService.mograteCountryByRedis(countryId);
+    }
 }

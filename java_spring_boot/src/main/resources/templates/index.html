@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>*** Manager System</title>
+
+    <!-- 引入css -->
+    <!-- <link th:href="@{http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css}" rel="stylesheet" > -->
+    <!-- <link th:href="${'/css/sbDemo.css'}" rel="stylesheet" /> -->
+
+    <!--（内部引入）导入js-->
+    <script th:src="${'/js/jquery.min.js'}" type="text/javascript"></script>
+    <!--(外部引入js) layer(弹出)-->
+    <script th:src="@{https://cdn.bootcss.com/layer/2.1/layer.js}"
+            type="text/javascript"></script>
+
+</head>
+<body>
+
+    <!--引入header碎片文件-->
+    <div th:replace="fragements/header"></div>
+
+    <!--引入sidebar碎片文件-->
+    <div th:replace="fragements/sidebar"></div>
+
+    <div th:if="${template}">
+        <div th:replace="${template}"></div>
+    </div>
+
+    <!--引入footer碎片文件-->
+    <div th:replace="fragements/footer "></div>
+
+    <!--引入footer碎片内部碎片文件-->
+    <div th:replace="fragements/footer :: footer"></div>
+
+<!--碎片组装器-->
+    <!-- include fragements/headers.html-->
+    <!-- include fragements/sidebar.html-->
+    <!--if ${template} ~= null
+    include ${template}
+    -->
+    <!-- include fragements/footer.html-->
+
+</body>
+</html>

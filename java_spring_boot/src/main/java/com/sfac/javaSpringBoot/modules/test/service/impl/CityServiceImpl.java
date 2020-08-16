@@ -66,9 +66,13 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    @Transactional
+    @Transactional(noRollbackFor = ArithmeticException.class)
     public Result<City> updateCity(City city) {
         cityDao.updateCity(city);
+        //用于查看加不加Transactional注解的不同，
+        // 为了避免加了Transactional还能遇到异常不回滚，
+        // 则需要添加    @Transactional(noRollbackFor = 异常名.class)
+        int i = 1/0;
         return new Result<>(Result.ResultStatus.SUCCESS.status,
                 "Update Success!",city);
     }
