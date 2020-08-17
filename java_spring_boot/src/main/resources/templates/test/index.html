@@ -35,3 +35,39 @@ checkbox:<input th:attr="type=${changeType}" th:checked="${checked}" type="text"
 <a th:href="@{/test/index(pageSize=${city.cityId},currentPage='1')}" th:text="${city.cityName}"></a>
 <img th:src="@{${shopLogo}}"/>
 <p>==================================================================</p>
+
+<h3>th:object</h3>
+<div th:object="${country}">
+    <p th:text="*{countryId}">countryId</p>
+    <p th:text="*{countryName}">countryName</p>
+    <p th:text="${country.countryCode}">countryCode</p>
+</div>
+<p>==================================================================</p>
+
+<h3>th:each </h3>
+<table>
+    <th>cityId</th><th>cityName</th><th>countryId</th>
+    <tr th:each="city : ${cities}">
+        <td th:text="${city.cityId}"></td>
+        <td th:text="${city.cityName}"></td>
+        <td th:text="${city.countryId}"></td>
+    </tr>
+</table>
+<select>
+    <option th:each="city,cityStatus : ${cities}"
+            th:text="${city.cityName}" th:value="${city.cityId}"></option>
+</select>
+<p>==================================================================</p>
+
+<h3>post form, th:action, th:object, th:field</h3>
+<!-- 我们可以指定是GET还是POST请求,这里需要注意的是有的浏览器并不支持PUT请求,SpringMVC为我们提供了一种解决方案,添加hidden指定method -->
+<!--这里用的时form表单传递的updateCity方法，就能验证再前端通过form提交-->
+<form method="post" th:action="${updateCityUri}" th:object="${city}">
+    <!--有些浏览器不支持put请求，因此springboot提供了一个下面的解决办法-->
+    <input name="_method" type="hidden" value="PUT">
+    City Id:			<input readonly th:field="*{cityId}"/>
+    City Name: 			<input th:field="*{cityName}"/>
+    Local City Name:	<input readonly th:field="*{localCityName}"/>
+    <button type="submit">Submit Info</button>
+</form>
+<p>==================================================================</p>

@@ -2,6 +2,7 @@ package com.sfac.javaSpringBoot.modules.test.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sfac.javaSpringBoot.aspect.ServiceAnnotation;
 import com.sfac.javaSpringBoot.modules.common.vo.Result;
 import com.sfac.javaSpringBoot.modules.common.vo.SearchVo;
 import com.sfac.javaSpringBoot.modules.test.dao.CityDao;
@@ -24,6 +25,7 @@ public class CityServiceImpl implements CityService {
 
     //为了避免查到的值为空，jdk8以后有了一个新的写法
     @Override
+    @ServiceAnnotation(value = "bbb")
     public List<City> getCitiesByCountryId(int countryId) {
 //        return cityDao.getCitiesByCountryId(countryId);
         return Optional
@@ -72,7 +74,7 @@ public class CityServiceImpl implements CityService {
         //用于查看加不加Transactional注解的不同，
         // 为了避免加了Transactional还能遇到异常不回滚，
         // 则需要添加    @Transactional(noRollbackFor = 异常名.class)
-        int i = 1/0;
+       //int i = 1/0;
         return new Result<>(Result.ResultStatus.SUCCESS.status,
                 "Update Success!",city);
     }
