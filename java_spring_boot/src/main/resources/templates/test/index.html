@@ -9,6 +9,27 @@
 <!--</body>-->
 <!--</html>-->
 
+<h3>file upload and downlod</h3>
+<a href="/test/file?fileName=QQ截图20200818144820.png">download file</a>
+
+<br>
+
+<!--后台传过来的状态提示的信息-->
+<p th:text="${message}"></p>
+<p>上传文件，使用multipart/form-data类型</p>     <!--上传文件的form表单的类型是enctype="multipart/form-data"-->
+<form action="/test/file" enctype="multipart/form-data" method="post">
+    <input name="file" type="file">
+    <button type="submit">上传</button>
+</form>
+<br>
+
+<form action="/test/files" enctype="multipart/form-data" method="post">
+    <input name="files" type="file">
+    <input name="files" type="file">
+    <button type="submit">上传</button>
+</form>
+<p>==================================================================</p>
+
 <h3>th:text</h3>
 <h1 th:text="${thymeleafTitle}">this is thymeleaf title</h1>
 <p th:text="${thymeleafTitle}">this is the thymeleaf ti-tle</p>

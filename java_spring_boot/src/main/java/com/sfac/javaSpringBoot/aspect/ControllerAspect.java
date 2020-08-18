@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 @Aspect
-@Component
+@Component //注册位系统的一个组件
 public class ControllerAspect {
     private final static Logger LOGGER = LoggerFactory.getLogger(ControllerAspect.class);
 
@@ -30,13 +30,14 @@ public class ControllerAspect {
 
     /**
      * 分为三个步骤，1、添加切面程序，@Aspect
-     *              2、设置切片，绑定切入的位置，@Pointcut
+     *              2、设置切片，绑定切入的位置，@Pointcut（有两种方式，一种是包全路径，二是自定义注释，需要new 一个 Annotation）
      *              3、进行通知的书写 void controllerPointCut()
      */
     @Pointcut("execution(public * com.sfac.javaSpringBoot.modules.*.controller.*.*(..))")
     @Order(1)
     public void controllerPointCut(){ }
 
+    //（因为上面的包全路径是不精确的，因此下面的@Before、@Around、@After 都是增强程序，提供精确定位）
     //前置通知
     @Before(value = "com.sfac.javaSpringBoot.aspect.ControllerAspect.controllerPointCut()")
     public void beforeController(JoinPoint joinPoint){
@@ -53,7 +54,7 @@ public class ControllerAspect {
         LOGGER.debug("请求参数：" + Arrays.toString(joinPoint.getArgs()));
     }
 
-    //环绕通知
+    //环绕通知（注意返回的是Object）
     @Around("com.sfac.javaSpringBoot.aspect.ControllerAspect.controllerPointCut()")
     public Object aroundController (ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
         LOGGER.debug("======= this is around controller =======");

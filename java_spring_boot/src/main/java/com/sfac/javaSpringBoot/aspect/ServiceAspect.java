@@ -14,7 +14,7 @@ public class ServiceAspect {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ServiceAspect.class);
 
-    //切入到的路径
+    //切入到的路径（这是AOP切面编程的第二种方式，与全路径的唯一不同就是@Pointcut这里的注解方式（精确定位到注释类））
     @Pointcut("@annotation(com.sfac.javaSpringBoot.aspect.ServiceAnnotation)")
     @Order(2)
     public void servicePointCut(){

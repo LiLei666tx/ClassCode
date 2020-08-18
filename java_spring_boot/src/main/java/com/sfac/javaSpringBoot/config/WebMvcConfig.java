@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+//用@Configuration标识的类就是配置类，而不是什么WebMvcConfig类（而应该说配置类）
 @Configuration
 @AutoConfigureAfter({WebMvcAutoConfiguration.class})
 public class WebMvcConfig implements WebMvcConfigurer {

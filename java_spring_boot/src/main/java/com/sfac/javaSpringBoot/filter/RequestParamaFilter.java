@@ -3,18 +3,15 @@ package com.sfac.javaSpringBoot.filter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
 
 //创建过滤器(@Order,当有多个过滤器时，用注解@Order(数字)来确定先后，数字越小的越靠前)
-@WebFilter(filterName = "requestParamaFilter", urlPatterns = "/**")
+@WebFilter(filterName = "requestParamaFilter", urlPatterns = "/**") //对所有的请求都生效
 public class RequestParamaFilter implements Filter {
     private final static Logger LOGGER = LoggerFactory.getLogger(RequestParamaFilter.class);
 
@@ -23,6 +20,7 @@ public class RequestParamaFilter implements Filter {
         LOGGER.debug("--------init request param filter");
     }
 
+    //实现filter的业务逻辑
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         LOGGER.debug("--------dofilter request param filter---------");
@@ -55,6 +53,7 @@ public class RequestParamaFilter implements Filter {
             }
         };
         //因为request被包装类wrapper包装了，所以用的是wrapper来代替request
+        //当写完业务之后，一定要用chain.dofilter把request和response交出去，否则上面的操作白写了
         chain.doFilter(wrapper, response);
     }
 

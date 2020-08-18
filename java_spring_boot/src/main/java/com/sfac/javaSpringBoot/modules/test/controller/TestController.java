@@ -9,14 +9,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +50,99 @@ public class TestController {
     private CityService cityService;
     @Autowired
     private CountryService countryService;
+
+    /**
+     * 下载文件
+     *127.0.0.1/test/file --- get
+     */
+    @GetMapping("/file")
+    public ResponseEntity<Resource> downloadFile(@RequestParam String fileName){
+        Resource resource = null;
+        try {
+            resource = new UrlResource(
+                    Paths.get("D:\\upload\\"+ fileName).toUri());
+            //判断资源是否存在且可读的
+            if(resource.exists() && resource.isReadable()){
+                return ResponseEntity
+                        .ok()
+                        .header(HttpHeaders.CONTENT_TYPE,"application/octet-stream") //下载的网络请求头上的类型
+                        .header(HttpHeaders.CONTENT_DISPOSITION, //描述
+                                String.format("attachment; filename=\"%s\"", resource.getFilename()))
+                        .body(resource);
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 单个文件的上传
+     *127.0.0.1/test/file --- post
+     */
+    //前端提交文件以form表单提交的形式的话，那么consums就需要写
+    @PostMapping(value = "/file", consumes = "multipart/form-data")
+    //上传文件的参数应该写（）
+    public String uploadFile(@RequestParam MultipartFile file, RedirectAttributes redirectAttributes){
+
+        //判断是否未选择文件就提交，也即是上传的我呢见为空，就直接给出提示
+        if(file.isEmpty()){
+            redirectAttributes.addFlashAttribute("message","请选择上传文件");
+            return "redirect:/test/index";
+        }
+        try {
+            //把上传的文件放到（D:/upload），file.getOriginalFilename()这个意思是文件名还是上传之前的名字，不做变更
+            String destFilePath = "D:\\upload\\" + file.getOriginalFilename();
+            //把路径放到一个新的File(目标文件)
+            File destFile = new File(destFilePath);
+            //文件上传（刚刚new的File）
+            file.transferTo(destFile);
+            redirectAttributes.addFlashAttribute("message","上传成功");
+        } catch (IOException e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message","上传失败");
+        }
+
+        //参数的复用
+        return "redirect:/test/index";
+    }
+
+    /**
+     *127.0.0.1/test/files
+     */
+    @PostMapping(value = "/files", consumes = "multipart/form-data")
+    public String uploadFiles(@RequestParam MultipartFile[] files,
+                              RedirectAttributes redirectAttributes){
+        //假定所有的文件都为空
+        boolean empty = true;
+
+        try {
+            for (MultipartFile file : files) {
+                //判断单词文件上传执行的是否为空，是的话，就跳出本次循环，+
+                //+如果不为空的话，就给empty赋值false,就不用提示（请选择文件）该语句
+                if(file.isEmpty()){
+                    continue;
+                }
+
+                String destFilePath = "D:\\upload\\" + file.getOriginalFilename();
+                File destFile = new File(destFilePath);
+                file.transferTo(destFile);
+                empty = false;
+            }
+
+            //如果全为空的话，就提醒
+            if(empty){
+                redirectAttributes.addFlashAttribute("message","请选择上传文件");
+            }else{
+                redirectAttributes.addFlashAttribute("message","上传成功");
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message","上传失败");
+        }
+
+        return "redirect:/test/index";
+    }
 
     /**
      * 127.0.0.1/test/index --- get
