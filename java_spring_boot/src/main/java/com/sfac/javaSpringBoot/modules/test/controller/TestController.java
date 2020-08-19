@@ -52,6 +52,14 @@ public class TestController {
     private CountryService countryService;
 
     /**
+     *127.0.0.1/test/indexSimple ---- get
+     */
+    @GetMapping("/indexSimple")
+    public String IndexSimpleTestPage(){
+        return "indexSimple";
+    }
+
+    /**
      * 下载文件
      *127.0.0.1/test/file --- get
      */
