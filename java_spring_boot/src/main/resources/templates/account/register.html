@@ -1,0 +1,72 @@
+
+<div class="login_wrapper">
+
+    <div class="animate form login_form" id="register">
+        <section class="login_content">
+            <form action="javascript:void(0);">
+                <h1>*** Manager System</h1>
+                <div>
+                    <input class="form-control" name="userName" placeholder="Username"
+                           required="" type="text" />
+                </div>
+                <div>
+                    <input class="form-control" name="password" placeholder="Password"
+                           required="" type="password" />
+                </div>
+                <div>
+                    <a class="btn btn-default submit" href="javascript:void(0)" id="registerButton">Submit</a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="separator">
+                    <p class="change_link">Already a member ?
+                        <a class="to_register" href="/account/login"> Log in </a>
+                    </p>
+
+                    <div class="clearfix"></div>
+                    <br />
+
+                    <div>
+                        <h1><i class="fa fa-paw"></i> LiLei </h1>
+                        <p>©2016 All Rights Reserved. Created by LiLei</p>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+        //绑定点击时间
+        $("#registerButton").bind("click", function(){
+            register();
+        });
+    });
+
+
+    function register() {
+        var user = {};
+        user.userName = $("[name=userName]").val();
+        user.password = $("[name=password]").val();
+
+        $.ajax({
+            url : "/api/user",
+            type : "post",
+            contentType: "application/json", //传递出去的
+            data : JSON.stringify(user),
+            success : function (data) {
+                if (data.status == 200) {
+                    location.href = "/account/login";
+                } else {
+                    layer.msg(data.message, {icon: 0});
+                }
+            },
+            error : function (data) {
+                layer.msg(data.responseText, {icon: 0});
+            }
+        });
+    }
+</script>
