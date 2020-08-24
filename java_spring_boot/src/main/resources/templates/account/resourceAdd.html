@@ -1,0 +1,46 @@
+<!-- 模态框（Modal） -->
+<div aria-hidden="true" aria-labelledby="resourceAddLabel" class="modal fade" id="resourceAddModal"
+	role="dialog" tabindex="-1" th:fragment="resourceAdd">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="resourceAddLabel"
+					style="font-size: 18px; font-weight: 500;">Resource Add</h4>
+				<button aria-hidden="true" class="close" data-dismiss="modal"
+					type="button">&times;</button>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group row">
+						<label class="control-label col-md-3">Resource Name</label>
+						<div class="col-md-8">
+							<input class="form-control" id="resourceNameForAddPage" name="resourceName"
+								placeholder="Enter resource name" type="text">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">Permission</label>
+						<div class="col-md-8">
+							<input class="form-control" id="permissionForAddPage" name="permission"
+								placeholder="Enter resource permission" type="text">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">Roles</label>
+						<div class="col-md-8" id="rolesForAddPage" name="roles"></div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<!-- data-dismiss="modal"关闭模态框 -->
+				<a class="btn btn-secondary" data-dismiss="modal" href="#">
+					<i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel
+				</a>
+				<button class="btn btn-primary" data-dismiss="modal"
+					id="resourceAddBtn" type="button">
+					<i class="fa fa-fw fa-lg fa-check-circle"></i>Submit
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

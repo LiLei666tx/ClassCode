@@ -12,7 +12,9 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //用@Configuration标识的类就是配置类，而不是什么WebMvcConfig类（而应该说配置类）
@@ -26,6 +28,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
     private RequestViewInterceptor requestViewInterceptor;
+
+    @Autowired
+    private ResourceConfigBean resourceConfigBean;
 
     //创建连接器
     @Bean
@@ -60,5 +65,20 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //注册拦截器并将所有的请求纳入到拦截器中
         registry.addInterceptor(requestViewInterceptor).addPathPatterns("/**");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String osName = System.getProperty("os.name");
+        //判断是哪一种系统，看是Windows害死Linux，其他的暂未说明
+        if(osName.startsWith("win")) {
+            registry.addResourceHandler(resourceConfigBean.getRelativePathPattern())
+                    .addResourceLocations(ResourceUtils.FILE_URL_PREFIX +
+                            resourceConfigBean.getLocationPathForWindows());
+        }else {
+            registry.addResourceHandler(resourceConfigBean.getRelativePathPattern())
+                    .addResourceLocations(ResourceUtils.FILE_URL_PREFIX +
+                            resourceConfigBean.getLocationPathForLinux());
+        }
     }
 }

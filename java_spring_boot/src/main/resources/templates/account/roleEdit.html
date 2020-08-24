@@ -1,0 +1,42 @@
+<!-- 模态框（Modal） -->
+<div aria-hidden="true" aria-labelledby="roleEditLabel" class="modal fade" id="roleEditModal"
+	role="dialog" tabindex="-1" th:fragment="roleEdit">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="roleEditLabel"
+					style="font-size: 18px; font-weight: 500;">Role Edit</h4>
+				<button aria-hidden="true" class="close" data-dismiss="modal"
+					type="button">&times;</button>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group row">
+						<label class="control-label col-md-3">role Id</label>
+						<div class="col-md-8">
+							<input class="form-control" id="roleIdForEditPage" name="roleId"
+								placeholder="Enter role id" readonly type="text"/>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">role Name</label>
+						<div class="col-md-8">
+							<input class="form-control" id="roleNameForEditPage" name="roleName"
+								placeholder="Enter role name" type="text">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<!-- data-dismiss="modal"关闭模态框 -->
+				<a class="btn btn-secondary" data-dismiss="modal" href="#">
+					<i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel
+				</a>
+				<button class="btn btn-primary" data-dismiss="modal"
+					id="roleEditBtn" type="button">
+					<i class="fa fa-fw fa-lg fa-check-circle"></i>Submit
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

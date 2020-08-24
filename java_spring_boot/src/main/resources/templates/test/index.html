@@ -10,6 +10,47 @@
 <!--</html>-->
 
 <div class="right_col" role="main">
+    <h1>Vue 测试</h1>
+    <div id="vueTest">
+        <h3>文本绑定</h3>
+        <div>{{title}}</div>
+        <h3>属性绑定 ---- 单向绑定 model to view</h3>
+        User Name: <input type="text" v-bind:value="userName"><br>
+        Password: <input :value="password" type="text"><br>
+        <h3>表单控件绑定 ---- 双向绑定 model <-> view</h3>
+        Email: <input type="text" v-model="email">
+        <!-- v-model.number 表示输入值转为 number -->
+        Step: <input type="text" v-model.number="step">
+        count: <input type="text" v-model.number="total">
+        <h3>事件绑定</h3>
+        test_1: <input type="button" v-on:click="test_1()" value="test_1"><br>
+        test_2: <input @click="test_2()" type="button" value="test_2"><br>
+    </div>
+    <script type="text/javascript">
+        var vueTest = new Vue({
+            el: "#vueTest",
+            data: {
+                    title: "Vue Test",
+                    userName: "HymanHu",
+                    password: "111111",
+                    email: "hujiang@163.com",
+                    step: 1,
+                    total: 0,
+            },
+            methods: {
+               test_1: function(){
+                   alert(this.userName + this.password);
+                   this.userName = "aaaaa";
+                   this.password = "22222"
+               },
+                test_2: function(){
+                    alert(this.email);
+                   this.total = this.total + this.step;
+                }
+            }
+        });
+    </script>
+
     <h3>测试</h3>>
     <a href="test/index">测试</a>
 
@@ -97,3 +138,28 @@
     </form>
     <p>==================================================================</p>
 </div>
+
+<script type="text/javascript">
+    var vueTest = new Vue({
+        el: "#vueTest",
+        data: {
+            title: "Vue Test",
+            userName: "HymanHu",
+            password: "111111",
+            email: "hujiang@163.com",
+            step: 1,
+            total: 0,
+        },
+        methods: {
+            test_1: function(){
+                alert(this.userName + this.password);
+                this.userName = "aaaaa";
+                this.password = "22222"
+            },
+            test_2: function(){
+                alert(this.email);
+                this.total = this.total + this.step;
+            }
+        }
+    });
+</script>
