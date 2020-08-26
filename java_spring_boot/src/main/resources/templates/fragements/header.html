@@ -8,7 +8,9 @@
             <ul class=" navbar-right">
                 <li class="nav-item dropdown open" style="padding-left: 15px;">
                     <a aria-expanded="false" aria-haspopup="true" class="user-profile dropdown-toggle" data-toggle="dropdown" href="javascript:;" id="navbarDropdown">
-                        <img alt="" src="/images/img.jpg">John Doe
+                        <img alt="" src="/images/img.jpg"><!--通过shiro中的session获取username显示在页面上-->
+                        <span property="userName" shiro:principal/>
+                        <input id="userId" th:value="${session.user.userId}" type="hidden">
                     </a>
                     <div aria-labelledby="navbarDropdown" class="dropdown-menu dropdown-usermenu pull-right">
                         <a class="dropdown-item"  href="javascript:;"> Profile</a>
@@ -17,7 +19,7 @@
                             <span>Settings</span>
                         </a>
                         <a class="dropdown-item"  href="javascript:;">Help</a>
-                        <a class="dropdown-item"  href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                        <a class="dropdown-item"  href="/account/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                     </div>
                 </li>
 

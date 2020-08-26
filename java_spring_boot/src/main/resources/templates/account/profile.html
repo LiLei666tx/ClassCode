@@ -314,6 +314,7 @@
 </div>
 <!-- /page content -->
 
+<!--插入修改模态框-->
 <div th:replace="account/profileEdit"></div>
 
 <!-- FastClick -->
@@ -321,8 +322,8 @@
 <!-- NProgress -->
 <script src="/plugin/nprogress/nprogress.js"></script>
 <!-- morris.js -->
-<!--<script src="/plugin/raphael/raphael.min.js"></script>-->
-<!--<script src="/plugin/morris.js/morris.min.js"></script>-->
+<script src="/plugin/raphael/raphael.min.js"></script>
+<script src="/plugin/morris.js/morris.min.js"></script>
 <!-- bootstrap-progressbar -->
 <script src="/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
 <!-- bootstrap-daterangepicker -->
@@ -336,7 +337,7 @@
     $(document).ready(function() {
         initFileInput();
 
-        initUserProfile(2);
+        initUserProfile($("#userId").val());
 
         $("#editProfile").bind("click", function(){
             editProfile();

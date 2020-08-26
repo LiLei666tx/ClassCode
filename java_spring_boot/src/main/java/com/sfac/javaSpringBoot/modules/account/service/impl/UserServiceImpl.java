@@ -7,11 +7,15 @@ import com.sfac.javaSpringBoot.modules.account.dao.UserDao;
 import com.sfac.javaSpringBoot.modules.account.dao.UserRoleDao;
 import com.sfac.javaSpringBoot.modules.account.entity.Role;
 import com.sfac.javaSpringBoot.modules.account.entity.User;
-import com.sfac.javaSpringBoot.modules.account.entity.UserRole;
 import com.sfac.javaSpringBoot.modules.account.service.UserService;
 import com.sfac.javaSpringBoot.modules.common.vo.Result;
 import com.sfac.javaSpringBoot.modules.common.vo.SearchVo;
 import com.sfac.javaSpringBoot.utils.MD5Util;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.subject.support.SubjectThreadState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -59,13 +62,36 @@ public class UserServiceImpl implements UserService {
                 Result.ResultStatus.SUCCESS.status,"insert success!",user);
     }
 
+    //使用shiro进行身份验证和资源管理
     @Override
     public Result<User> login(User user) {
-        User userTemp = userDao.getUserByUserName(user.getUserName());
-        if(userTemp !=null && userTemp.getPassword().equals(MD5Util.getMD5(user.getPassword()))){
-            return new Result<User>(Result.ResultStatus.SUCCESS.status,"Success!",userTemp);
+        //shiro设置Subject
+        Subject subject = SecurityUtils.getSubject();
+        //封装令牌类
+        UsernamePasswordToken usernamePasswordToken =
+                new UsernamePasswordToken(user.getAccountName(),
+                        MD5Util.getMD5(user.getPassword()));
+        try{
+            //调用身份验证器，去验证是否有资格权限（把包装好的令牌类与身份验证器做比对）
+            subject.login(usernamePasswordToken);
+            //调用资源验证器
+            subject.checkRoles();
+        }catch(Exception e){
+            //没成功登陆
+            e.printStackTrace();
+            return new Result<>(Result.ResultStatus.FAILD.status,
+                    "UserName or Password is error!!");
         }
-        return new Result<User>(Result.ResultStatus.FAILD.status,"username or password error!");
+//        User userTemp = userDao.getUserByUserName(user.getUserName());
+//        if(userTemp !=null && userTemp.getPassword().equals(MD5Util.getMD5(user.getPassword()))){
+//            return new Result<User>(Result.ResultStatus.SUCCESS.status,"Success!",userTemp);
+//        }
+        //登陆拿到Session
+        Session session = subject.getSession();
+        session.setAttribute("user", (User)subject.getPrincipal());
+        //成功登陆返回信息
+        return new Result<User>(Result.ResultStatus.SUCCESS.status,
+                "Login Success!",user);
     }
 
     @Override
@@ -143,5 +169,32 @@ public class UserServiceImpl implements UserService {
 
         return new Result<String>(
                 Result.ResultStatus.SUCCESS.status, "Upload success.", relativePath);
+    }
+
+    @Override
+    @Transactional
+    public Result<User> updateUserProfile(User user) {
+        User userTemp = userDao.getUserByUserName(user.getUserName());
+        if (userTemp != null && userTemp.getUserId() != user.getUserId()) {
+            return new Result<User>(Result.ResultStatus.FAILD.status, "User name is repeat.");
+        }
+
+        userDao.updateUser(user);
+
+        return new Result<User>(Result.ResultStatus.SUCCESS.status, "Edit success.", user);
+    }
+
+    @Override
+    public User getUserByUserName(String userName) {
+        return userDao.getUserByUserName(userName);
+    }
+
+    @Override
+    public void logput() {
+        //shiro设置Subject
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        Session session = subject.getSession();
+        session.setAttribute("user",null);
     }
 }

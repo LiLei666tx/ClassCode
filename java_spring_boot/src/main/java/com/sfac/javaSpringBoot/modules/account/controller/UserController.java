@@ -5,15 +5,11 @@ import com.sfac.javaSpringBoot.modules.account.entity.User;
 import com.sfac.javaSpringBoot.modules.account.service.UserService;
 import com.sfac.javaSpringBoot.modules.common.vo.Result;
 import com.sfac.javaSpringBoot.modules.common.vo.SearchVo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
@@ -57,12 +53,15 @@ public class UserController {
         return userService.updateUser(user);
     }
 
-    /*
-     *127.0.0.1/api/user/9 --- delete
-     */
-    @DeleteMapping("/user/{userId}")
-    public Result<Object> deleteUser(@PathVariable int userId) {
-        return userService.deleteUser(userId);
+    public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+        for(int i = 0;i <100;i++){
+            for(int j=0;j<1000;j++){
+                System.out.println("===========");
+            }
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("time= "+(end-start));
     }
 
     /*
@@ -80,5 +79,30 @@ public class UserController {
     //上传文件的参数应该写（）
     public Result<String> uploadFile(@RequestParam MultipartFile file){
         return userService.uploadUserImg(file);
+    }
+
+    /*
+     *127.0.0.1/api/user/9 --- delete
+     */
+    @DeleteMapping("/user/{userId}")
+    @RequiresPermissions(value = "/api/user")       //shiro的资源权限管理，只有admin才能调用该操作
+    public Result<Object> deleteUser(@PathVariable int userId){
+        return userService.deleteUser(userId);
+    }
+
+//    /*
+//     *127.0.0.1/api/logout --- get
+//     */
+//    @GetMapping("/logout")
+//    public void logout(){
+//        userService.logput();
+//    }
+
+    /**
+     * 127.0.0.1/api/profile ---- put
+     */
+    @PutMapping(value = "/profile", consumes = "application/json")
+    public Result<User> updateUserProfile(@RequestBody User user) {
+        return userService.updateUserProfile(user);
     }
 }

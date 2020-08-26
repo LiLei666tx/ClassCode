@@ -91,6 +91,7 @@
             <script src="/plugin/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
             <script src="/plugin/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
             <script src="/plugin/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+
             <script type="text/javascript">
 
                 var DEFAULT_PAGE_SIZE = 5;          //默认显示行数
@@ -331,8 +332,8 @@
                                     if (data.status == 200) {
                                         initUserTable(DEFAULT_PAGE_SIZE);
                                     } else {
-                                        // window.location.href = data.object;
-                                        layer.msg(data.message, {icon: 0});
+                                         window.location.href = data.object;
+                                        //layer.msg(data.message, {icon: 0});
                                     }
                                 },
                                 error : function (data) {

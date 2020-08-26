@@ -17,6 +17,7 @@ public interface UserDao {
     void insertUser(User user);
 
     @Select("select * from user where user_name = #{userName}")
+    @ResultMap(value = "userResults")
     User getUserByUserName(String userName);
 
     @Select("<script>" +
@@ -37,8 +38,8 @@ public interface UserDao {
             + "</script>")
     List<User> getUsersBySearchVo(SearchVo searchVo);
 
-    @Update("update user set user_name=#{userName}, " +
-            "user_img=#{userImg} where user_id = #{userId}")
+    @Update("update user set user_name = #{userName}, " +
+            "user_img = #{userImg} where user_id = #{userId}")
     void updateUser(User user);
 
     @Delete("delete from user where user_id = #{userId}")

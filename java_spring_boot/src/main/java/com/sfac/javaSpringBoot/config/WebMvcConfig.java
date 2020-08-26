@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //用@Configuration标识的类就是配置类，而不是什么WebMvcConfig类（而应该说配置类）
@@ -80,5 +81,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
                     .addResourceLocations(ResourceUtils.FILE_URL_PREFIX +
                             resourceConfigBean.getLocationPathForLinux());
         }
+    }
+
+    //默认欢迎页面
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("welcome");
     }
 }

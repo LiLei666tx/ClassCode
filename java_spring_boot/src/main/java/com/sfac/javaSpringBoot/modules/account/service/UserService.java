@@ -22,4 +22,10 @@ public interface UserService {
     User getUserByUserId(int userId);
 
     Result<String> uploadUserImg(MultipartFile file);
+
+    Result<User> updateUserProfile(User user);
+
+    User getUserByUserName(String userName);
+
+    void logput();
 }

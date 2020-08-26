@@ -6,7 +6,7 @@
             <form action="javascript:void(0);">
                 <h1>*** Manager System</h1>
                 <div>
-                    <input class="form-control" name="userName" placeholder="Username"
+                    <input class="form-control" name="accountName" placeholder="accountName"
                            required="" type="text" />
                 </div>
                 <div>
@@ -76,7 +76,8 @@
        };
 
         var user = {};
-        user.userName = $("[name=userName]").val();
+        // user.userName = $("[name=userName]").val();
+        user.accountName = $("[name=accountName]").val();
         user.password = $("[name=password]").val();
         //判断复选框是否被勾选
         user.rememberMe = $("[name=rememberMe]").prop("checked")
